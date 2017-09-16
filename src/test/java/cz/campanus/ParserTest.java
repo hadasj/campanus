@@ -4,15 +4,18 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cz.campanus.config.Configuration;
 import cz.campanus.dto.EntryDto;
 import cz.campanus.parse.EntryTitleSummaryParser;
 import cz.campanus.parse.Parser;
@@ -25,7 +28,16 @@ public class ParserTest {
     private static final String HEMALOVA_URL = "http://www.campanus.cz/hemalova/";
     private static final String CONTENT_PATTERN = "content";
 
-    private Parser parser = new EntryTitleSummaryParser();
+    private Parser parser;
+
+    @Before
+    public void init() throws IOException {
+        InputStream input = getClass().getClassLoader().getResourceAsStream("test.properties");
+        assertNotNull(input);
+
+        Configuration configuration = new Configuration(input);
+        parser = new EntryTitleSummaryParser(configuration);
+    }
 
     @Test
     public void simpleTest() throws Exception {

@@ -6,11 +6,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 
 import javax.mail.MessagingException;
 
-import cz.campanus.Constants;
+import cz.campanus.config.Configuration;
 import cz.campanus.dto.EntryDto;
 import cz.campanus.io.EntryFileLoader;
 import cz.campanus.io.EntryLoader;
@@ -19,21 +20,24 @@ import cz.campanus.parse.EntryTitleSummaryParser;
 import cz.campanus.parse.Parser;
 import cz.campanus.io.EntryFileStore;
 import cz.campanus.io.EntryStore;
-
-import static cz.campanus.Constants.ENTRY_START_PATTERN;
-import static cz.campanus.Constants.ENTRY_END_PATTERN;
 /**
  * @author jan.hadas@i.cz
  */
 public class Sender {
+    private Configuration configuration;
 
-    public boolean checkWeb(String webUrl, String storeFileName, String subject, String... emails)
+    public Sender(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    public boolean checkWeb(String webUrl, String storeFileName, String subject, Collection<String> emails)
                                                                     throws IOException, MessagingException {
-        Parser parser = new EntryTitleSummaryParser();
+        Parser parser = new EntryTitleSummaryParser(configuration);
         EntryLoader loader = new EntryFileLoader(storeFileName);
         BufferedReader input = new BufferedReader(new InputStreamReader(new URL(webUrl).openStream()));
 
-        List<EntryDto> actualEntries = parser.parse(input, Constants.PARSED_ENTRY_COUNT, ENTRY_START_PATTERN, ENTRY_END_PATTERN);
+        List<EntryDto> actualEntries = parser.parse(input, configuration.getEntryCount(), configuration.getEntryStartPattern(),
+            configuration.getEntryStopPattern());
         List<EntryDto> oldEntries = loader.loadAllEntries();
 
         // overwrite file by actual data

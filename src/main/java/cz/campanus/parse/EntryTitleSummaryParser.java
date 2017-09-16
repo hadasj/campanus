@@ -9,16 +9,20 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cz.campanus.config.Configuration;
 import cz.campanus.dto.EntryDto;
-
-import static cz.campanus.Constants.TITLE_PATTERN;
-import static cz.campanus.Constants.CONTENT_PATTERN;
 
 /**
  * @author jan.hadas@i.cz
  */
 public class EntryTitleSummaryParser extends Parser {
     final static Logger LOG = LoggerFactory.getLogger(EntryTitleSummaryParser.class);
+
+    private Configuration configuration;
+
+    public EntryTitleSummaryParser(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
     @Override
     protected EntryDto parseEntry(BufferedReader input) throws IOException {
@@ -28,7 +32,7 @@ public class EntryTitleSummaryParser extends Parser {
 
         do {
             line = input.readLine();
-            if (line != null && line.contains(TITLE_PATTERN))
+            if (line != null && line.contains(configuration.getTitlePattern()))
                 // start of entry has been found - continue searching
                 entryFound = true;
 
@@ -57,13 +61,13 @@ public class EntryTitleSummaryParser extends Parser {
         String line;
         do {  // skip first part
             line = summaryInput.readLine();
-        } while (line != null && !line.contains(CONTENT_PATTERN));
+        } while (line != null && !line.contains(configuration.getContentPattern()));
 
         do {
             line = readLine(summaryInput);
-            if (line != null && !line.contains(CONTENT_PATTERN))
+            if (line != null && !line.contains(configuration.getContentPattern()))
                 dto.getContent().add(line);
-        } while (line != null && !line.contains(CONTENT_PATTERN));
+        } while (line != null && !line.contains(configuration.getContentPattern()));
     }
 
     /**
@@ -75,7 +79,7 @@ public class EntryTitleSummaryParser extends Parser {
         if (line == null)
             return null;
 
-        while (line.contains("<div class=\"" + CONTENT_PATTERN)) {
+        while (line.contains("<div class=\"" + configuration.getContentPattern())) {
             line = reader.readLine();
         }
         // remove <p>
