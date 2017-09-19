@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import cz.campanus.config.Configuration;
@@ -17,10 +16,6 @@ import cz.campanus.send.Sender;
  * @author jan.hadas@i.cz
  */
 public class SenderTest {
-    private static final String URL = "http://www.campanus.cz/hemalova/";
-    private static final String FILE = "hemal.txt";
-    private static final String MAIL = "hadas.jan@gmail.com";
-
     private static final String JARDA_URL = "http://www.campanus.cz/hemalova/";
     private static final String JARDA_SUBJECT = "CAMPANUS - WEB Hemalová";
     private static final String JARDA_FILE = "hemalova.txt";
@@ -38,13 +33,7 @@ public class SenderTest {
     }
 
     @Test
-    @Ignore
-    public void sendNewsletter() throws Exception {
-        sender.checkWeb(URL, FILE, "Test campanus utilitky", asList(MAIL));
-    }
-
-    @Test
-    public void test() throws Exception {
+    public void sendNotificationTest() throws Exception {
         sender.checkWeb(JARDA_URL, JARDA_FILE, JARDA_SUBJECT, asList(HONZA_EMAIL));
     }
 }
