@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
+import cz.campanus.security.Cipher;
+
 /**
  * @author jan.hadas@i.cz
  */
@@ -30,6 +32,7 @@ public class Configuration {
     private String entryStopPattern;
     private String titlePattern;
     private String contentPattern;
+    private String password;
 
 
     public Configuration(InputStream input) throws IOException {
@@ -57,6 +60,7 @@ public class Configuration {
         entryStopPattern = properties.getProperty("entry.stop.pattern");
         titlePattern = properties.getProperty("title.pattern");
         contentPattern = properties.getProperty("content.pattern");
+        password = new Cipher().decrypt(properties.getProperty("password"));
     }
 
     public Set<String> getEmails() {
@@ -117,5 +121,13 @@ public class Configuration {
 
     public String getContentPattern() {
         return contentPattern;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

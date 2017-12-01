@@ -21,10 +21,9 @@ public class StartTLSMail {
   private static final String FROM = "hadas.jan@gmail.com";
   private static final String HOST = "smtp.gmail.com";
   private static final String LOGIN = "hadas.jan@gmail.com";
-  private static final String PASSWORD = "hadswd12";
   private static final int PORT = 587;
 
-  public static void sendEmail(String body, String subject, String recipient) throws MessagingException {
+  public static void sendEmail(String body, String subject, String recipient, final String password) throws MessagingException {
 
     Properties mailProps = new Properties();
     mailProps.put("mail.smtp.host", HOST);
@@ -38,7 +37,7 @@ public class StartTLSMail {
     Session mailSession = Session.getDefaultInstance(mailProps, new Authenticator() {
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(LOGIN, PASSWORD);
+        return new PasswordAuthentication(LOGIN, password);
       }
     });
 

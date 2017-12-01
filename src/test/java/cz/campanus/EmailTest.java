@@ -17,6 +17,6 @@ public class EmailTest {
   @Test
   public void should_send_icz_mail() throws Exception {
     //GoogleMail.Send();
-    StartTLSMail.sendEmail("Hello world!! ;-)", "Test email 6", "jan.hadas@i.cz");
+    StartTLSMail.sendEmail("Hello world!! ;-)", "Test email 6", "jan.hadas@i.cz", "pasSwd");
   }
 }

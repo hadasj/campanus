@@ -62,13 +62,13 @@ public class Sender {
 
         boolean emailSent = false;
         for (String email : emails) {
-            emailSent = sendNewsletter(actualEntries, count, subject, email);
+            emailSent = sendNewsletter(actualEntries, count, subject, email, configuration.getPassword());
         }
         return emailSent;
     }
 
     private boolean sendNewsletter(List<EntryDto> entries, int count, String subject,
-                                String email) throws MessagingException {
+                                String email, String password) throws MessagingException {
         String content = "";
 
         for (int i = 0; i < count; i++) {
@@ -77,7 +77,7 @@ public class Sender {
         }
 
         if (!content.equals("")) {
-            StartTLSMail.sendEmail(content, subject, email);
+            StartTLSMail.sendEmail(content, subject, email, password);
             return true;
         }
         return false;
