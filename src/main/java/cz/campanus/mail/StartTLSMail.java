@@ -18,9 +18,9 @@ import javax.mail.internet.MimeMultipart;
  * @author jan.hadas@i.cz
  */
 public class StartTLSMail {
-  private static final String FROM = "hadas.jan@gmail.com";
+  private static final String FROM = "notifikacecampanus@gmail.com";
   private static final String HOST = "smtp.gmail.com";
-  private static final String LOGIN = "hadas.jan@gmail.com";
+  private static final String LOGIN = "notifikacecampanus@gmail.com";
   private static final int PORT = 587;
 
   public static void sendEmail(String body, String subject, String recipient, final String password) throws MessagingException {
