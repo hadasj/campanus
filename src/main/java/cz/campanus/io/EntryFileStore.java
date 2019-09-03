@@ -21,7 +21,7 @@ public class EntryFileStore extends EntryStore {
     }
 
     @Override
-    protected void storeEntry(EntryDto entry) throws IOException {
+    protected void storeEntry(EntryDto entry) {
         output.print(entry.getTitle());
         output.print(SEPARATOR);
         output.print(entry.getDetailUrl());
@@ -29,7 +29,7 @@ public class EntryFileStore extends EntryStore {
     }
 
     @Override
-    protected void close() throws IOException {
+    protected void close() {
         output.flush();
         output.close();
     }

@@ -5,7 +5,8 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -33,11 +34,12 @@ public class Configuration {
     private String titlePattern;
     private String contentPattern;
     private String password;
-
+    private LocalTime startAt;
+    private int intervalInMinutes;
 
     public Configuration(InputStream input) throws IOException {
         properties = new Properties();
-        properties.load(new InputStreamReader(input, Charset.forName("UTF-8")));
+        properties.load(new InputStreamReader(input, StandardCharsets.UTF_8));
         init();
     }
 
@@ -61,6 +63,9 @@ public class Configuration {
         titlePattern = properties.getProperty("title.pattern");
         contentPattern = properties.getProperty("content.pattern");
         password = new Cipher().decrypt(properties.getProperty("password"));
+        final String[] startTime = properties.getProperty("start.at.time").split(":");
+        startAt = LocalTime.of(Integer.parseInt(startTime[0]), Integer.parseInt(startTime[1]));
+        intervalInMinutes = Integer.parseInt(properties.getProperty("interval.in.minutes"));
     }
 
     public Set<String> getEmails() {
@@ -127,7 +132,11 @@ public class Configuration {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public LocalTime getStartAt() {
+        return startAt;
+    }
+
+    public int getIntervalInMinutes() {
+        return intervalInMinutes;
     }
 }

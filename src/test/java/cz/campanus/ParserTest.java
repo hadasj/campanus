@@ -25,7 +25,7 @@ import cz.campanus.parse.Parser;
  */
 public class ParserTest {
     private static final Logger LOG = LoggerFactory.getLogger(ParserTest.class);
-    private static final String HEMALOVA_URL = "http://www.campanus.cz/hemalova/";
+    private static final String HEMALOVA_URL = "http://www.campanus.cz/cizkova/";
     private static final String CONTENT_PATTERN = "content";
 
     private Parser parser;

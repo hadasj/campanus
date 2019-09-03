@@ -16,7 +16,7 @@ import cz.campanus.send.Sender;
  * @author jan.hadas@i.cz
  */
 public class SenderTest {
-    private static final String JARDA_URL = "http://www.campanus.cz/hemalova/";
+    private static final String JARDA_URL = "http://www.campanus.cz/cizkova/";
     private static final String JARDA_SUBJECT = "CAMPANUS - WEB Hemalová";
     private static final String JARDA_FILE = "hemalova.txt";
     private static final String HONZA_EMAIL = "hadas.jan@gmail.com";
