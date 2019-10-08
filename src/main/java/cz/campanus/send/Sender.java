@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class Sender {
                                                                     throws IOException, MessagingException {
         Parser parser = new EntryTitleSummaryParser(configuration);
         EntryLoader loader = new EntryFileLoader(storeFileName);
-        BufferedReader input = new BufferedReader(new InputStreamReader(new URL(webUrl).openStream()));
+        BufferedReader input = new BufferedReader(new InputStreamReader(new URL(webUrl).openStream(), StandardCharsets.UTF_8));
 
         List<EntryDto> actualEntries = parser.parse(input, configuration.getEntryCount(), configuration.getEntryStartPattern(),
             configuration.getEntryStopPattern());

@@ -44,15 +44,15 @@ public class StartTLSMail {
     MimeMessage message = new MimeMessage(mailSession);
     message.setFrom(new InternetAddress(FROM));
     String[] emails = { recipient };
-    InternetAddress dests[] = new InternetAddress[emails.length];
+    InternetAddress[] destinations = new InternetAddress[emails.length];
     for (int i = 0; i < emails.length; i++) {
-      dests[i] = new InternetAddress(emails[i].trim().toLowerCase());
+      destinations[i] = new InternetAddress(emails[i].trim().toLowerCase());
     }
-    message.setRecipients(Message.RecipientType.TO, dests);
+    message.setRecipients(Message.RecipientType.TO, destinations);
     message.setSubject(subject, "UTF-8");
     Multipart mp = new MimeMultipart();
     MimeBodyPart mbp = new MimeBodyPart();
-    mbp.setContent(body, "text/html;charset=utf-8");
+    mbp.setContent(body, "text/html;charset=windows-1250");
     mp.addBodyPart(mbp);
     message.setContent(mp);
     message.setSentDate(new java.util.Date());
