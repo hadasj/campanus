@@ -7,9 +7,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import cz.campanus.security.Cipher;
 
@@ -36,6 +35,7 @@ public class Configuration {
     private String password;
     private LocalTime startAt;
     private int intervalInMinutes;
+    private List<Integer> runAtHours = new ArrayList<>();
 
     public Configuration(InputStream input) throws IOException {
         properties = new Properties();
@@ -43,11 +43,10 @@ public class Configuration {
         init();
     }
 
-    public void init() {
+    private void init() {
         String email = properties.getProperty("email");
         if (isNotEmpty(email))
-            for(String mail : email.split(","))
-                emails.add(mail);
+            emails.addAll(Arrays.asList(email.split(",")));
         jardaFile = properties.getProperty("jarda.file");
         jardaSubject = properties.getProperty("jarda.subject");
         jardaUrl = properties.getProperty("jarda.url");
@@ -63,9 +62,15 @@ public class Configuration {
         titlePattern = properties.getProperty("title.pattern");
         contentPattern = properties.getProperty("content.pattern");
         password = new Cipher().decrypt(properties.getProperty("password"));
-        final String[] startTime = properties.getProperty("start.at.time").split(":");
-        startAt = LocalTime.of(Integer.parseInt(startTime[0]), Integer.parseInt(startTime[1]));
-        intervalInMinutes = Integer.parseInt(properties.getProperty("interval.in.minutes"));
+        if (properties.getProperty("start.at.time") != null) {
+            final String[] startTime = properties.getProperty("start.at.time").split(":");
+            startAt = LocalTime.of(Integer.parseInt(startTime[0]), Integer.parseInt(startTime[1]));
+        }
+        intervalInMinutes = properties.getProperty("interval.in.minutes") == null ? 0 : Integer.parseInt(properties.getProperty("interval.in.minutes"));
+        String hours = properties.getProperty("run.at.hours");
+        if (hours != null) {
+            runAtHours.addAll(Arrays.stream(hours.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
+        }
     }
 
     public Set<String> getEmails() {
@@ -138,5 +143,9 @@ public class Configuration {
 
     public int getIntervalInMinutes() {
         return intervalInMinutes;
+    }
+
+    public List<Integer> getRunAtHours() {
+        return runAtHours;
     }
 }

@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 
 public class Runner {
@@ -37,23 +35,14 @@ public class Runner {
 					.usingJobData(jobData)
 					.build();
 
-			final Date  startAt = Date.from(LocalDateTime.now()
-					.withHour(configuration.getStartAt().getHour())
-					.withMinute(configuration.getStartAt().getMinute())
-					.withSecond(0)
-					.atZone(ZoneId.systemDefault())
-					.toInstant());
-			final Trigger trigger = TriggerBuilder.newTrigger()
-					.startAt(startAt)
-					.withSchedule(
-							SimpleScheduleBuilder
-									.simpleSchedule()
-									.repeatForever()
-									.withIntervalInMinutes(configuration.getIntervalInMinutes())
-					)
-					.build();
-
-			scheduler.scheduleJob(campanusJob, trigger);
+			for (int hour : configuration.getRunAtHours()) {
+				final Trigger cronTrigger = CronScheduleBuilder
+						.dailyAtHourAndMinute(hour, 0)
+						.withMisfireHandlingInstructionFireAndProceed()
+						.build();
+				final Date firstRun = scheduler.scheduleJob(campanusJob, cronTrigger);
+				LOG.info("Campanus planned at {}", firstRun);
+			}
 		} catch (Exception e) {
 			LOG.error("Unexpected error", e);
 		}
