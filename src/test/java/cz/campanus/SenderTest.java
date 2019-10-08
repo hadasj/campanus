@@ -1,12 +1,13 @@
 package cz.campanus;
 
-import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import cz.campanus.config.Configuration;
@@ -32,8 +33,9 @@ public class SenderTest {
         sender = new Sender(configuration);
     }
 
+    @Ignore
     @Test
     public void sendNotificationTest() throws Exception {
-        sender.checkWeb(JARDA_URL, JARDA_FILE, JARDA_SUBJECT, asList(HONZA_EMAIL));
+        sender.checkWeb(JARDA_URL, JARDA_FILE, JARDA_SUBJECT, singletonList(HONZA_EMAIL));
     }
 }

@@ -25,7 +25,7 @@ import cz.campanus.parse.Parser;
  */
 public class ParserTest {
     private static final Logger LOG = LoggerFactory.getLogger(ParserTest.class);
-    private static final String HEMALOVA_URL = "http://www.campanus.cz/cizkova/";
+    private static final String CAMPANUS_URL = "http://www.campanus.cz/cizkova/";
     private static final String CONTENT_PATTERN = "content";
 
     private Parser parser;
@@ -41,7 +41,7 @@ public class ParserTest {
 
     @Test
     public void simpleTest() throws Exception {
-        final InputStream inputStream = new URL(HEMALOVA_URL).openStream();
+        final InputStream inputStream = new URL(CAMPANUS_URL).openStream();
         BufferedReader input = new BufferedReader(new InputStreamReader(inputStream));
 
         List<EntryDto> parsedResult = parser.parse(input, 5, CONTENT_PATTERN, "#" + CONTENT_PATTERN);
@@ -50,7 +50,7 @@ public class ParserTest {
         assertFalse(parsedResult.isEmpty());
         EntryDto entryDto = parsedResult.get(0);
 
-        LOG.info("Title: {}", entryDto.getTitle());
-        LOG.info("Content: {}", entryDto.getContent());
+        System.out.println("Title: " + entryDto.getTitle());
+        System.out.println("Content: " + entryDto.getContent());
     }
 }
