@@ -31,17 +31,20 @@ public class Runner {
 
 			final JobDataMap jobData = new JobDataMap();
 			jobData.put("configuration", configuration);
-			final JobDetail campanusJob = JobBuilder.newJob(CampanusJob.class)
-					.usingJobData(jobData)
-					.build();
 
 			for (int hour : configuration.getRunAtHours()) {
-				final Trigger cronTrigger = CronScheduleBuilder
-						.dailyAtHourAndMinute(hour, 0)
-						.withMisfireHandlingInstructionFireAndProceed()
+				final JobDetail campanusJob = JobBuilder.newJob(CampanusJob.class)
+						.usingJobData(jobData)
+						.build();
+				final Trigger cronTrigger = TriggerBuilder.newTrigger()
+						.withSchedule(
+								CronScheduleBuilder
+										.dailyAtHourAndMinute(hour, 0)
+										.withMisfireHandlingInstructionFireAndProceed()
+						)
 						.build();
 				final Date firstRun = scheduler.scheduleJob(campanusJob, cronTrigger);
-				LOG.info("Campanus planned at {}", firstRun);
+				LOG.info("Campanus job: {} planned at {}", campanusJob.getKey(), firstRun);
 			}
 		} catch (Exception e) {
 			LOG.error("Unexpected error", e);
